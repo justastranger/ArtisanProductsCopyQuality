@@ -6,12 +6,11 @@ namespace ArtisanProductsCopyQuality
 {
     public class ModEntry : Mod
     {
-        internal static ModEntry instance;
         internal Config config;
 
         public override void Entry(IModHelper helper)
         {
-            instance = this;
+            Monitor.Log("Teaching your machines a few new tricks.", LogLevel.Info);
             config = helper.ReadConfig<Config>();
             Helper.Events.Content.AssetRequested += AssetRequested;
         }
@@ -31,9 +30,11 @@ namespace ArtisanProductsCopyQuality
                     if (!config.machinesToTarget.Contains(machine.Key)) continue;
                     machine.Value?.OutputRules.ForEach(rule => {
                         rule?.OutputItem.ForEach(item => {
-                            if (item is not null) item.CopyQuality = true;
+                            if (item is not null)
+                                item.CopyQuality = true;
                         });
                     });
+                    Monitor.Log($"Enabled CopyQuality property on all of {machine.Key}'s OutputItems.", LogLevel.Trace);
                 }
             }
         }
