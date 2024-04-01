@@ -4,6 +4,12 @@ This mod replicates Quality Artisan Products in a way that cuts out the need to 
 
 ## Configuration
 
+With GMCM, you can edit the config from the title screen.
+
+There is only one text box, values must be separated by a semicolon but whitespace is optional (it gets trimmed).
+
+### Config File
+
 The `config.json` file consists of one property: A list of Qualified Item IDs corresponding to each Machine's Object.
 
 By default the file looks like this:

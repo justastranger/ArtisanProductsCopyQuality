@@ -7,12 +7,30 @@ namespace ArtisanProductsCopyQuality
     public class ModEntry : Mod
     {
         internal Config config;
+        internal ITranslationHelper i18n => Helper.Translation;
 
         public override void Entry(IModHelper helper)
         {
-            Monitor.Log("Teaching your machines a few new tricks.", LogLevel.Info);
-            config = helper.ReadConfig<Config>();
+            Monitor.Log(i18n.Get("ArtisanProductsCopyQuality.start"), LogLevel.Info);
             Helper.Events.Content.AssetRequested += AssetRequested;
+            Helper.Events.GameLoop.GameLaunched += GameLaunched;
+        }
+
+        private void GameLaunched(object? sender, GameLaunchedEventArgs e)
+        {
+            config = Helper.ReadConfig<Config>();
+            if (Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))
+            {
+                var api = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+
+                api?.Register(ModManifest, () => config = new Config(), () => Helper.WriteConfig(config), true);
+                api?.AddSectionTitle(ModManifest, () => "Targeted Machines");
+                api?.AddTextOption(ModManifest, () => string.Join("; ", config.machinesToTarget), (string val) =>
+                {
+                    config.machinesToTarget = val.Split(";").Select(value => value.Trim()).Where(value => !string.IsNullOrWhiteSpace(value)).ToHashSet();
+                    Helper.GameContent.InvalidateCache("Data/Machines");
+                }, () => i18n.Get("ArtisanProductsCopyQuality.config.TargetedMachines.name"), () => i18n.Get("ArtisanProductsCopyQuality.config.TargetedMachines.description"));
+            }
         }
 
         private void AssetRequested(object? sender, AssetRequestedEventArgs ev)
@@ -34,7 +52,8 @@ namespace ArtisanProductsCopyQuality
                                 item.CopyQuality = true;
                         });
                     });
-                    Monitor.Log($"Enabled CopyQuality property on all of {machine.Key}'s OutputItems.", LogLevel.Trace);
+
+                    Monitor.Log(i18n.Get("ArtisanProductsCopyQuality.patch", new { machine.Key }), LogLevel.Trace);
                 }
             }
         }
