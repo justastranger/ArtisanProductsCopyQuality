@@ -8,5 +8,16 @@ The `config.json` file consists of one property: A list of Qualified Item IDs co
 
 By default the file looks like this:
 ```json
-
+{
+  "machinesToTarget": [
+    "(BC)17",
+    "(BC)12",
+    "(BC)15",
+    "(BC)16",
+    "(BC)24",
+    "(BC)19",
+    "(BC)Dehydrator",
+    "(BC)FishSmoker"
+  ]
+}
 ```
