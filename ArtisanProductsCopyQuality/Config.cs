@@ -8,7 +8,7 @@ namespace ArtisanProductsCopyQuality
 {
     internal class Config
     {
-        internal HashSet<string> machinesToTarget { get; set; }
+        public HashSet<string> machinesToTarget { get; set; }
 
         public Config()
         {
