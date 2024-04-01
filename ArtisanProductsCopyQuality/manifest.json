@@ -8,5 +8,13 @@
     "MinimumApiVersion": "4.0.0",
     "UpdateKeys": [
         "GitHub:justastranger/ArtisanProductsCopyQuality"
+    ],
+    "Dependencies": [
+        {
+            "Name": "Generic Mod Config Menu",
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "MinimumVersion": "1.12.0",
+            "IsRequired": false
+        }
     ]
 }
